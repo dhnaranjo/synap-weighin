@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1>A new top score has been posted by <%= @person.name %></h1>
+    <p>
+      They have a score of <%= @person.up_by || 0 %>.
+      <%= @previously_in_first ? "They have dethroned #{@previously_in_first.name}, who has #{@previously_in_first.up_by}" : nil %>
+    </p>
+  </body>
+</html>

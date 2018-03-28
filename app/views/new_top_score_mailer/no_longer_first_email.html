@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1><%= @previously_in_first.name %>, You've been <%= @tie ? "tied for" : "knocked out of" %> first place! A new top score has been posted by <%= @person.name %></h1>
+    <p>
+      They have gained <%= @person.up_by || 0 %> pounds, which is <%= @tie ? "tied with how much you've gained" : "much better than your measly #{@previously_in_first.up_by || 0 } pounds" %>. Keep eating!
+    </p>
+  </body>
+</html>

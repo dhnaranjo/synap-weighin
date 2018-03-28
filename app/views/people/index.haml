@@ -1,0 +1,34 @@
+%h1{class: 'text-center'}= "WEIGH-IN #{@event.name}"
+%h2{class: 'text-center'}= @event.tagline
+%div{class: 'table-container'}
+  %table{border: 0, class: 'table table-condensed borderless'}
+    %tr
+      %th{class: 'ordinal'}
+      %th{class: 'text-left person-name'} NAME
+      %th{:'data-field' => 'up_by', :'data-sortable' => 'true', class: 'text-right weight'} UP BY
+    - previous_score = nil
+    - index = 0
+    - people_with_current_rank = 1
+    - @event.people.sort_by{|p| p.up_by || -1000 }.reverse.each do |person|
+      - up_by = person.try(:up_by)
+      - positive = up_by.to_f > 0 ? 'positive' : 'negative'
+      %tr
+        - percentage_change = person.try(:percentage_change)
+        - if up_by.to_f == previous_score.to_f
+          - people_with_current_rank += 1
+        - else
+          - index += people_with_current_rank
+          - people_with_current_rank = 1
+        - previous_score = up_by
+        %td{class: 'ordinal'}= up_by ? index : nil
+        %td{class: 'person-name'}= link_to(person.name.upcase, person_path(person))
+        - percent_text = up_by && percentage_change ? "(#{percentage_change.round(2)}%)" : ""
+        %td{class: "#{positive} text-right weight"}= "#{up_by.try(:round, 3)} #{percent_text}"
+
+%br
+%br
+%br
+%br
+%br
+= link_to('OTHER EVENTS', events_path)
+= link_to('CHECK IN', new_checkin_path, class: 'btn btn-default btn-block navbar navbar-fixed-bottom button-link') unless ENV['QUIET_MODE']

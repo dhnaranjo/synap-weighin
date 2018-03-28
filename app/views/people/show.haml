@@ -1,0 +1,17 @@
+%h2
+  #{@person.name}
+- @person.try(:checkin_diffs).each_pair do |event, diffs|
+  %table
+    %th= event
+    -diffs.each do |diff|
+      - classname = diff.to_f > 0 ? 'positive' : 'negative'
+      %tr
+        %td{class: classname} #{diff.to_f}
+  %br
+%br
+%br
+%br
+%br
+%br
+%h3
+  %a= link_to('< Back', people_path, class: 'btn btn-default btn-block navbar navbar-fixed-bottom')

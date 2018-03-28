@@ -1,0 +1,23 @@
+%h1{class: 'text-center'} New Checkin
+%div
+
+- flash.each do |key, value|
+  .alert{ :class => "alert-#{key}" }
+    %button.close{ :data => { :dismiss => "alert" } } x
+    %strong
+      = value
+%div
+  .input-group
+    = form_for :checkin, url: checkins_path do |f|
+      - options = ['SELECT YOUR NAME'] + @people.map { |person| [person.name, person.id] }
+      = f.select :person_id, options_for_select(options, disabled: ['-'*20]), class: 'input-block-level'
+      %br
+      = link_to('Not Listed?', new_person_path, class: 'btn btn-default btn-block') unless ENV['QUIET_MODE']
+      %p
+      = f.label :weight
+      %br
+      = f.text_field :weight, { autocomplete: :off, class: "form-control" }
+      = f.submit class: "btn btn-primary text-uppercase btn-block", value: 'SAVE >'
+
+%h3
+  %a= link_to('< Back', people_path, class: 'btn btn-default btn-block navbar navbar-fixed-bottom')

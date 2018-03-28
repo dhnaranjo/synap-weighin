@@ -1,0 +1,23 @@
+%h1{class: 'text-center'} Please create a New Event
+%div
+
+- flash.each do |key, value|
+  .alert{ :class => "alert-#{key}" }
+    %button.close{ :data => { :dismiss => "alert" } } x
+    %strong
+      = value
+%div
+  .input-group
+    = form_for :event, url: events_path do |f|
+      %p
+      = f.label :name
+      %br
+      = f.text_field :name, { autocomplete: :off, class: "form-control" }
+      %p
+      = f.label :tagline
+      %br
+      = f.text_field :tagline, { autocomplete: :off, class: "form-control" }
+      = f.submit class: "btn btn-primary text-uppercase btn-block", value: 'SAVE >'
+
+%h3
+  %a= link_to('< Back', people_path, class: 'btn btn-default btn-block navbar navbar-fixed-bottom')
