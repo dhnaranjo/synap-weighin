@@ -1,7 +1,48 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
+require 'csv'
+
+participants_csv = CSV.foreach(Rails.root.join('lib/seeds/participants.csv'), headers: true)
+
+date_sorted_participants = participants_csv
+  .to_a
+  .sort_by { |row| Date.parse(row['Date']) }
+
+persons = date_sorted_participants.uniq { |row| row['Name'] }
+Person.transaction do
+  persons.each do |person|
+    Person.create(
+      name: person['Name'],
+      created_at: person['Date']
+    )
+  end
+end
+
+events = date_sorted_participants.uniq { |event| event['Event'] }
+Event.transaction do
+  events.each do |event|
+    Event.create(name: event['Event'], created_at: event['Date'])
+  end
+end
+
+# checkins_csv = CSV.foreach(Rails.root.join('lib/seeds/weighins.csv'), headers: true)
 #
-# Examples:
+# Checkin.transaction do
+#   checkins_csv.each do |checkin|
+#     Checkin.create(
+#       person: Person.find_by(name: checkin['Name']),
+#       event: Event.find_by('DATE(created_at) = ?', Date.parse(checkin['Time'])),
+#       weight: checkin['Weight'],
+#       created_at: checkin['Time']
+#     )
+#   end
+# end
 #
-#   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
-#   Mayor.create(name: 'Emanuel', city: cities.first)
+# Person.transaction do
+#   Person.all.each do |person|
+#     checkins = person.checkins.order(:created_at)
+#     first_checkin = checkins.first
+#     person.update(starting_weight: first_checkin.weight)
+#     checkins.reduce(first_checkin.weight) do |prev_weight, checkin|
+#       checkin.update(delta: checkin.weight - first_checkin.weight)
+#     end
+#   end
+# end
