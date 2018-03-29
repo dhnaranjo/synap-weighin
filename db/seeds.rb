@@ -11,7 +11,8 @@ Person.transaction do
   persons.each do |person|
     Person.create(
       name: person['Name'],
-      created_at: person['Date']
+      created_at: person['Date'],
+      league: League.find_or_initialize_by(name: person['League'])
     )
   end
 end
@@ -23,26 +24,26 @@ Event.transaction do
   end
 end
 
-# checkins_csv = CSV.foreach(Rails.root.join('lib/seeds/weighins.csv'), headers: true)
-#
-# Checkin.transaction do
-#   checkins_csv.each do |checkin|
-#     Checkin.create(
-#       person: Person.find_by(name: checkin['Name']),
-#       event: Event.find_by('DATE(created_at) = ?', Date.parse(checkin['Time'])),
-#       weight: checkin['Weight'],
-#       created_at: checkin['Time']
-#     )
-#   end
-# end
-#
-# Person.transaction do
-#   Person.all.each do |person|
-#     checkins = person.checkins.order(:created_at)
-#     first_checkin = checkins.first
-#     person.update(starting_weight: first_checkin.weight)
-#     checkins.reduce(first_checkin.weight) do |prev_weight, checkin|
-#       checkin.update(delta: checkin.weight - first_checkin.weight)
-#     end
-#   end
-# end
+checkins_csv = CSV.foreach(Rails.root.join('lib/seeds/weighins.csv'), headers: true)
+
+Checkin.transaction do
+  checkins_csv.each do |checkin|
+    Checkin.create(
+      person: Person.find_by(name: checkin['Name']),
+      event: Event.find_by('DATE(created_at) = ?', Date.parse(checkin['Time'])),
+      weight: checkin['Weight'],
+      created_at: checkin['Time']
+    )
+  end
+end
+
+Person.transaction do
+  Person.all.each do |person|
+    checkins = person.checkins.order(:created_at)
+    first_checkin = checkins.first
+    person.update(starting_weight: first_checkin.weight)
+    checkins.reduce(first_checkin.weight) do |prev_weight, checkin|
+      checkin.update(delta: checkin.weight - first_checkin.weight)
+    end
+  end
+end

@@ -1,5 +1,6 @@
 class Person < ActiveRecord::Base
 
+  belongs_to :league
   has_many :checkins
   has_many :user_person_joins
   has_many :users, through: :user_person_joins
