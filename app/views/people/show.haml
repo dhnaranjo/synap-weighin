@@ -1,3 +1,4 @@
+= render partial: "nav"
 %h2
   #{@person.name}
 - @person.try(:checkin_diffs).each_pair do |event, diffs|
