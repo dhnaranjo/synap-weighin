@@ -1,12 +1,11 @@
-%h2
-  #{@event.name}
-- @event.people.each_with_index do |person, index|
-  %table
-    %tr
-      %td{class: 'ordinal'}= index
-      %td{class: "text-left"}=link_to(person.name, person_path(person.id))
-      %td{class: "text-left weight"}=person.up_by(@event)
-  %br
+= render partial: "nav"
+%h2 #{@event.name}
+%h3 All Participants
+= render partial: "past_competition_table", locals: { people: @event.people, event: @event }
+%br
+- @event.leagues.each do |league|
+  %h3= league.name
+  = render partial: "past_competition_table", locals: { people: league.people, event: @event }
 %br
 %br
 %br
