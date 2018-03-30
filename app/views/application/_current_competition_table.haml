@@ -8,7 +8,7 @@
       %th{class: 'text-right weight'} UP BY
     - Person.ordered_by_up_by(competition.people).each_with_index do |person, index|
       %tr
-        %td{class: 'ordinal'}= index
+        %td{class: 'ordinal'}= index + 1
         %td{class: 'person-name'}= link_to(person.name, person_path(person.id))
         - positive = person.up_by.to_f > 0 ? 'positive' : 'negative'
         - rounded_up_by = person.up_by.try(:round, 3)

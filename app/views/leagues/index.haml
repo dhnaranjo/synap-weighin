@@ -1,16 +1,6 @@
 = render partial: "nav"
 %h1{class: 'text-center'}= "List of leagues:"
-%div{class: 'table-container'}
-  %table{border: 0, class: 'table table-condensed borderless'}
-    %tr
-      %th{class: 'ordinal'}
-      %th{class: 'text-left person-name'} NAME
-    - @leagues.each_with_index do |event, index|
-      / TODO: add winner here
-      %tr
-        %td{class: 'ordinal'}= index
-        %td{class: "text-left weight"}=link_to(event.name, event_path(event.id))
-
+= render partial: "group_listing", locals: { groups: @leagues }
 %br
 %br
 %br

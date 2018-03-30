@@ -1,6 +1,9 @@
 = render partial: "nav"
 = render partial: "current_competition_table", locals: { competition: @event }
 %br
+- @event.leagues.each do |league|
+  %h3= league.name
+  = render partial: "past_competition_table", locals: { people: league.people, event: @event }
 %br
 %br
 %br
