@@ -16,6 +16,7 @@ Rails.application.routes.draw do
   resources :people, only: [:create, :new, :index, :show]
   resources :checkins, only: [:create, :new]
   resources :events, only: [:create, :new, :index, :show,]
+  resources :leagues, only: [:create, :new, :index, :show]
 
   # Example resource route with options:
   #   resources :products do
