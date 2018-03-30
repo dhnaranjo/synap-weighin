@@ -10,6 +10,11 @@
     %br
     = f.text_field :weight, { autocomplete: :off, class: "form-control" }
     %br
+      - options = ['SELECT YOUR LEAGUE'] + League.all.map { |league| [league.name, league.id] }
+      = f.select :league_id, options_for_select(options, disabled: ['-'*20]), class: 'input-block-level'
+      %br
+      = link_to('Not Listed?', new_league_path, class: 'btn btn-default btn-block') unless ENV['QUIET_MODE']
+    %br
     = f.submit class: "btn btn-primary text-uppercase btn-block", value: 'SAVE >'
 %h3
   %a= link_to('< Back', new_checkin_path, class: 'btn btn-default btn-block navbar navbar-fixed-bottom')

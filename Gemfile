@@ -43,6 +43,7 @@ group :development, :test do
   gem 'pry'
   gem 'pry-nav'
   gem 'simplecov', '~> 0.9'
+  gem 'pry-remote'
 end
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'

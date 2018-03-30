@@ -9,4 +9,7 @@
         %td{class: 'ordinal'}= index + 1
         %td{class: "text-left weight"}=link_to(group.name, polymorphic_path(group))
         - winner = Person.ordered_by_up_by(group.people, group).first
-        %td{class: 'text-right'}= link_to(winner.name, person_path(winner))
+        - if winner.nil?
+          %td{class: 'text-right'}
+        - else
+          %td{class: 'text-right'}= link_to(winner.name, person_path(winner))

@@ -9,7 +9,7 @@ class LeaguesController < ApplicationController
 
   def create
     @league = League.create(league_params)
-    redirect_to people_path
+    redirect_to new_person_path
   end
 
   private

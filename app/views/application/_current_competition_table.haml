@@ -12,6 +12,9 @@
         %td{class: 'person-name'}= link_to(person.name, person_path(person.id))
         - positive = person.up_by.to_f > 0 ? 'positive' : 'negative'
         - rounded_up_by = person.up_by.try(:round, 3)
-        - rounded_percentage_change = person.percentage_change.round(2)
-        - padded_percentage_change = sprintf("%+.2f", rounded_percentage_change)
-        %td{class: "#{positive} text-right weight"}= "#{rounded_up_by} (#{padded_percentage_change}%)"
+        - if !person.percentage_change.nil?
+          - rounded_percentage_change = person.percentage_change.round(2)
+          - padded_percentage_change = sprintf("%+.2f", rounded_percentage_change)
+          %td{class: "#{positive} text-right weight"}= "#{rounded_up_by} (#{padded_percentage_change}%)"
+        - else
+          %td{class: "negative text-right weight"} 0.0 (+0.00%)
