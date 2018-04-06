@@ -7,7 +7,7 @@ class Person < ActiveRecord::Base
 
   def self.ordered_by_up_by(people, event = nil)
     people
-      .sort_by { |person| person.up_by(event).to_i }
+      .sort_by { |person| [person.up_by(event).to_i, person.name] }
       .reverse
   end
 
@@ -19,9 +19,9 @@ class Person < ActiveRecord::Base
     last_checkin == first_checkin ? nil : last_checkin.weight - first_checkin.weight
   end
 
-  def percentage_change
+  def percentage_change(event = nil)
     return unless up_by
-    @percentage_change ||= starting_weight ?  up_by.to_f / starting_weight * 100 : nil
+    @percentage_change ||= starting_weight ?  up_by(event).to_f / starting_weight * 100 : nil
   end
 
   def checkin_diffs
