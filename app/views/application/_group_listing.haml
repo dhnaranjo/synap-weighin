@@ -3,13 +3,7 @@
     %tr
       %th{class: 'ordinal'}
       %th{class: 'text-left person-name'} NAME
-      %th{class: 'text-right person-name'} WINNER
     - groups.each_with_index do |group, index|
       %tr
         %td{class: 'ordinal'}= index + 1
         %td{class: "text-left weight"}=link_to(group.name, polymorphic_path(group))
-        - winner = Person.ordered_by_up_by(group.people, group).first
-        - if winner.nil?
-          %td{class: 'text-right'}
-        - else
-          %td{class: 'text-right'}= link_to(winner.name, person_path(winner))
