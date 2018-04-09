@@ -1,13 +1,10 @@
 = render partial: "nav"
-= render partial: "current_competition_table", locals: { competition: @league }
 
-- @league.events.reverse.each do |event|
+%h1{class: 'text-center'}= "#{@league.name}"
+%h2{class: 'text-center'}= @league.tagline
+- people = Person.ordered_by_up_by(@league.people)
+= render partial: "primary_leaderboard", locals: { people: people }
+- @league.events.each do |event|
+  - event_people = Person.ordered_by_up_by(@league.people, event)
   %h3= event.name
-  = render partial: "past_competition_table", locals: { people: @league.people, event: event }
-%br
-%br
-%br
-%br
-%br
-= link_to('OTHER LEAGUES', leagues_path)
-= link_to('CHECK IN', new_checkin_path, class: 'btn btn-default btn-block navbar navbar-fixed-bottom button-link') unless ENV['QUIET_MODE']
+  = render partial: "secondary_leaderboard", locals: { people: event_people, event: event }

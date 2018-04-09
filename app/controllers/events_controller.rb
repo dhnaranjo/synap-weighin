@@ -4,7 +4,8 @@ class EventsController < ApplicationController
   end
 
   def show
-    @event = Event.find(params[:id])
+    @event = Event.includes(:leagues, :people).find(params[:id])
+    @current_event = true if @event == Event.last
   end
 
   def create

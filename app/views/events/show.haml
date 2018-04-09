@@ -1,15 +1,19 @@
 = render partial: "nav"
-%h2 #{@event.name}
-%h3 All Participants
-= render partial: "past_competition_table", locals: { people: @event.people, event: @event }
+
+- if @current_event
+  %h1{class: 'text-center'}= "WEIGH-IN #{@event.name}"
+- else
+  %h1{class: 'text-center'}= "FINAL RESULTS OF #{@event.name}"
+%h2{class: 'text-center'}= @event.tagline
+- people = Person.ordered_by_up_by(@event.people, @event)
+= render partial: "primary_leaderboard", locals: { people: people, competition: @event }
 %br
-- @event.leagues.each do |league|
+- leagues = people.group_by(&:league)
+- leagues.each do |league, league_people|
   %h3= league.name
-  = render partial: "past_competition_table", locals: { people: league.people, event: @event }
+  = render partial: "secondary_leaderboard", locals: { people: league_people, event: @event }
 %br
 %br
 %br
 %br
-%br
-%h3
-  %a= link_to('< Back', people_path, class: 'btn btn-default btn-block navbar navbar-fixed-bottom')
+= link_to('CHECK IN', new_checkin_path, class: 'btn btn-default btn-block navbar navbar-fixed-bottom button-link') unless ENV['QUIET_MODE'] if @current_event

@@ -1,0 +1,16 @@
+%div{class: 'table-container'}
+  %table{border: 0, class: 'table table-condensed borderless'}
+    %tr
+      %th{class: 'ordinal'}
+      %th{class: 'text-left person-name'} NAME
+      %th{class: 'text-right weight'} UP BY
+    - people.each_with_index do |person, index|
+      %tr
+        %td{class: 'ordinal'}= index + 1
+        %td{class: 'person-name'}= link_to(person.name, person_path(person.id))
+        - up_by = person.up_by(@event).to_f
+        - positive = up_by > 0 ? 'positive' : 'negative'
+        - rounded_up_by = up_by.round(3)
+        - rounded_percentage_change = person.percentage_change.round(2)
+        - padded_percentage_change = sprintf("%+.2f", rounded_percentage_change)
+        %td{class: "#{positive} text-right weight"}= "#{up_by} (#{padded_percentage_change}%)"
