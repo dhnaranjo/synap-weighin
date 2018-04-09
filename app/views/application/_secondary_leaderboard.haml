@@ -3,4 +3,4 @@
     %tr
       %td{class: 'ordinal'}= index + 1
       %td{class: "text-left"}=link_to(person.name, person_path(person.id))
-      %td{class: "text-left weight"}=person.up_by(@event)
+      %td{class: "text-left weight"}=person.up_by(event)

@@ -5,8 +5,7 @@
 - else
   %h1{class: 'text-center'}= "FINAL RESULTS OF #{@event.name}"
 %h2{class: 'text-center'}= @event.tagline
-- unsorted_people = @event.people.includes(:league)
-- people = Person.ordered_by_up_by(unsorted_people, @event)
+- people = Person.ordered_by_up_by(@event.people, @event)
 = render partial: "primary_leaderboard", locals: { people: people, competition: @event }
 %br
 - leagues = people.group_by(&:league)

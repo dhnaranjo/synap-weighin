@@ -16,7 +16,11 @@ class Person < ActiveRecord::Base
     return @up_by_event[event] if @up_by_event.has_key?(event)
     @up_by_event[event] =
       begin
-        checkins_from_event = event.checkins.where(person: self).order(:created_at)
+        if checkins.loaded?
+          checkins_from_event = checkins.select { |checkin| checkin.event == event }
+        else
+          checkins_from_event = checkins.where(event: event).order(:created_at)
+        end
         return 0 if checkins_from_event.first.nil?
         first_checkin = checkins_from_event.first
         last_checkin = checkins_from_event.last
