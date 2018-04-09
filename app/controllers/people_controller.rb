@@ -10,7 +10,9 @@ class PeopleController < ApplicationController
 
   def index
     @event = Event.last
-    unless @event
+    if @event
+      redirect_to event_path(@event)
+    else
       redirect_to new_event_path
     end
   end
