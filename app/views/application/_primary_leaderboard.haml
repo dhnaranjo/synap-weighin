@@ -1,3 +1,5 @@
+- event = local_assigns.fetch :event, @event
+- display_league = local_assigns.fetch :display_league, nil
 %div{class: 'table-container'}
   %table{border: 0, class: 'table table-condensed borderless'}
     %tr
@@ -7,8 +9,11 @@
     - people.each_with_index do |person, index|
       %tr
         %td{class: 'ordinal'}= index + 1
-        %td{class: 'person-name'}= link_to(person.name, person_path(person.id))
-        - up_by = person.up_by(@event).to_f
+        %td{class: 'person-name'}
+          %p= link_to(person.name, person_path(person.id))
+          - if display_league
+            %p= link_to(person.league.name, league_path(person.league))
+        - up_by = person.up_by(event).to_f
         - positive = up_by > 0 ? 'positive' : 'negative'
         - rounded_up_by = up_by.round(3)
         - rounded_percentage_change = person.percentage_change.round(2)

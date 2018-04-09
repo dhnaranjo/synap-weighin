@@ -7,4 +7,4 @@
 - @league.events.each do |event|
   - event_people = Person.ordered_by_up_by(@league.people, event)
   %h3= event.name
-  = render partial: "secondary_leaderboard", locals: { people: event_people, event: event }
+  = render partial: "primary_leaderboard", locals: { people: event_people, event: event }

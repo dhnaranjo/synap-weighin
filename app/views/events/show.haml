@@ -6,12 +6,12 @@
   %h1{class: 'text-center'}= "FINAL RESULTS OF #{@event.name}"
 %h2{class: 'text-center'}= @event.tagline
 - people = Person.ordered_by_up_by(@event.people, @event)
-= render partial: "primary_leaderboard", locals: { people: people, competition: @event }
+= render partial: "primary_leaderboard", locals: { people: people, display_league: true }
 %br
 - leagues = people.group_by(&:league)
 - leagues.each do |league, league_people|
   %h3= league.name
-  = render partial: "secondary_leaderboard", locals: { people: league_people, event: @event }
+  = render partial: "primary_leaderboard", locals: { people: league_people }
 %br
 %br
 %br
