@@ -13,14 +13,20 @@ class Person < ActiveRecord::Base
 
   def up_by(event = nil)
     return attributes['up_by'] if event.nil?
-    checkins_from_event = event.checkins.where(person: self).order(:created_at)
-    first_checkin = checkins_from_event.first
-    last_checkin = checkins_from_event.last
-    last_checkin == first_checkin ? nil : last_checkin.weight - first_checkin.weight
+    @up_by_event ||= {}
+    return @up_by_event[event] if @up_by_event.has_key?(event)
+    @up_by_event[event] =
+      begin
+        checkins_from_event = event.checkins.where(person: self).order(:created_at)
+        return 0 if checkins_from_event.first.nil?
+        first_checkin = checkins_from_event.first
+        last_checkin = checkins_from_event.last
+        last_checkin.weight - first_checkin.weight
+      end
   end
 
   def percentage_change(event = nil)
-    return unless up_by
+    return 0 unless up_by
     @percentage_change ||= starting_weight ?  up_by(event).to_f / starting_weight * 100 : nil
   end
 
