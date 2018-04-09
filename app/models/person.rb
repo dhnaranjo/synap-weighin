@@ -7,8 +7,7 @@ class Person < ActiveRecord::Base
 
   def self.ordered_by_up_by(people, event = nil)
     people
-      .sort_by { |person| [person.up_by(event).to_i, person.name] }
-      .reverse
+      .sort_by { |person| [-(person.up_by(event)), person.name, person.id] }
   end
 
   def up_by(event = nil)
